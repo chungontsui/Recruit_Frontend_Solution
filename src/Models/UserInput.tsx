@@ -3,5 +3,4 @@ interface UserInput {
     cvc: string;
     expiry: Date
 }
-
 export default UserInput;

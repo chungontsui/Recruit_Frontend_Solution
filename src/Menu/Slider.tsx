@@ -1,4 +1,5 @@
 import React, { ReactComponentElement } from 'react';
+import './Slider.css';
 
 class Slider extends React.Component{
     render(){

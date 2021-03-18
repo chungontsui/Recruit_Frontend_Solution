@@ -25,7 +25,7 @@ function App() {
         </div>
         <div className="row" style={{marginTop: '70%'}}>
           <div className="col">
-            <InputForm></InputForm>
+            <InputForm full_name={`${user.FirstName} ${user.LastName}`}></InputForm>
           </div>
         </div>
       </div>

@@ -1,13 +1,16 @@
 import React, { ReactComponentElement } from 'react';
 import ValidatorFunction from './ValidatorFunction';
 import { UserInfo } from 'os';
+import axios from 'axios';
 
 interface validation_error{
   HasError: boolean,
   ErrorMessage : string
 }
 
-interface IProps{}
+interface IProps{
+  full_name : string
+}
 
 interface IState{
   creditcard_error? : validation_error,
@@ -35,11 +38,22 @@ class InputForm extends React.Component<IProps, IState> {
       expiry_error : { HasError : false, ErrorMessage : ''}
     }
   }
-  SubmitHandler = (event: any) => {
+  SubmitHandler = async (event: any) => {
     console.log(`Credit Card Number: ${this.state.creditcard_number}`);
     console.log(`CVC: ${this.state.cvc}`);
     console.log(`Expiry: ${this.state.expiry}`);
-    return false;
+
+    axios.post(
+      'https://localhost:44395/api/customerdetails',
+      {Name: this.props.full_name, CreditCard: this.state.creditcard_number, CVC: this.state.cvc, ExpiryDate: this.state.expiry},
+      { headers: { 'Authorization': 'Bearer 123456','Content-Type': 'application/json' } }
+    ).then((data) => {
+      console.log(data);
+    }).catch((error) => {
+      console.log(error);
+    });
+
+
   }
   validationHandler = (event: any) => {
     switch (event.target.name) {
@@ -55,6 +69,10 @@ class InputForm extends React.Component<IProps, IState> {
         if(!creditcard_testResult.pass) creditcard_ErrorMessage.push(creditcard_testResult.message);
 
         this.setState({creditcard_error : { HasError : creditcard_hasError, ErrorMessage : creditcard_ErrorMessage.join('; ') }})
+
+        if(!creditcard_hasError){
+          this.setState({creditcard_number : event.target.value});
+        }
         break;
       case "cvc":
           let cvc_hasError = false;
@@ -67,7 +85,11 @@ class InputForm extends React.Component<IProps, IState> {
           cvc_hasError = !cvc_testResult.pass;
           if(!cvc_testResult.pass) cvc_ErrorMessage.push(cvc_testResult.message);
 
-          this.setState({cvc_error : { HasError : cvc_hasError, ErrorMessage : cvc_ErrorMessage.join('; ') }})
+          this.setState({cvc_error : { HasError : cvc_hasError, ErrorMessage : cvc_ErrorMessage.join('; ') }});
+
+          if(!cvc_hasError){
+           this.setState({cvc : event.target.value}); 
+          }
           break;
         break;
       case "expiry":
@@ -78,12 +100,16 @@ class InputForm extends React.Component<IProps, IState> {
           expiry_hasError = !expiry_testResult.pass;
           if(!expiry_testResult.pass) expiry_ErrorMessage = expiry_testResult.message;
 
-          this.setState({expiry_error : { HasError : expiry_hasError, ErrorMessage : expiry_ErrorMessage }})
-        break
+          this.setState({expiry_error : { HasError : expiry_hasError, ErrorMessage : expiry_ErrorMessage }});
+
+          if(!expiry_hasError){
+            this.setState({expiry : event.target.value});
+          }
+        break;
     }
   }
   render() {
-    return (<form action='#' onSubmit={this.SubmitHandler}>
+    return (<form onSubmit={this.SubmitHandler}>
       <div className='form-group'>
         <input type='text' className='form-control' placeholder='Credit Card Nunber' name='creditcard' onBlur={this.validationHandler} />
         {this.state.creditcard_error!.HasError ? <ValidationErrorMessage displayVal='block' message={this.state.creditcard_error!.ErrorMessage} /> : null}

@@ -8,18 +8,22 @@ import Greeting from './Greeting/Greeting';
 
 import UserModel from './Models/UserModel';
 
-const user = {
+const user:UserModel = {
   Id: 1,
   FirstName: "Joe",
   LastName: "Blog"
 }
+
 function App() {
 
   return (
     <div className="App">
       <Slider></Slider>
-      <div className="container" style={{marginTop: '100%'}}>
-        <div className="row">
+      <div className="container" >
+        <div className='row mt-5'>
+          <Greeting user={user}></Greeting>
+        </div>
+        <div className="row" style={{marginTop: '70%'}}>
           <div className="col">
             <InputForm></InputForm>
           </div>

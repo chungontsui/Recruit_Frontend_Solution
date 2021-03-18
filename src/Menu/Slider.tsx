@@ -3,7 +3,13 @@ import './Slider.css';
 
 class Slider extends React.Component{
     render(){
-        return (<nav role="navigation">
+        return (
+<div>
+<header>
+  <h3>Register Card Form</h3>
+  <a href="#menu" className="toggle-menu" aria-role="button"><i className="fa fa-bars"></i></a>
+</header>
+        <nav role="navigation">
         <div id="menuToggle">
 
           <input type="checkbox" />
@@ -16,7 +22,7 @@ class Slider extends React.Component{
             <a href="#"><li>This is menu content</li></a>
           </ul>
         </div>
-      </nav>);
+      </nav></div>);
     }
 }
 

@@ -153,6 +153,7 @@
  {
    padding: 10px 0;
    font-size: 22px;
+   color: black;
  }
 
  /*
@@ -160,5 +161,7 @@
   */
  #menuToggle input:checked ~ ul
  {
+   height: 650px;
    transform: none;
+   padding-top: 40px;
  }

@@ -19,7 +19,8 @@ class Slider extends React.Component{
           <span></span>
 
           <ul id="menu">
-            <a href="#"><li>This is menu content</li></a>
+            <li>Menu</li>
+            <li><div style={{ marginTop: "100%"}}>This is menu content</div></li>
           </ul>
         </div>
       </nav></div>);
